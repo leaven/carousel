@@ -1,5 +1,6 @@
 <html>
 <head>
+<meta charset="utf-8">
 <link rel="stylesheet" href="http://list.video.baidu.com/pc_static/common/base.css" />
 <style>
    #carouselContainer{
@@ -66,10 +67,10 @@
   <div id="carouselContainer">
   	<ul class="carousel">
 		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
-		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
-		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
-		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
-		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
+		<li><img src="http://c.hiphotos.baidu.com/image/pic/item/58ee3d6d55fbb2fb593177e74d4a20a44623dc28.jpg" /></li>
+		<li><img src="http://h.hiphotos.baidu.com/image/pic/item/6159252dd42a2834c3f759f859b5c9ea14cebff4.jpg" /></li>
+		<li><img src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
+		<li><img src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
 	</ul>
 	<div class="carousel-control">
 		<ul class="carousel-dot">
@@ -88,14 +89,16 @@
   <script>
 	$(".carousel").bdvCarousel({
 		containerWidth : 984,
-		containerHeight : 500
+		containerHeight : 500,
+		animate : "fade"
 	});
 	var carousel = $(".carousel").data("bdvCarousel");
 	$(".carousel-dot").on("click", function(e) {
 		var se = e.target;
 		if(se.nodeName !="LI")return;
-		$(se).addClass("item-selected").siblings("li").removeClass("item-selected");
+		
 		carousel.goTo($(".carousel-dot li").index(se));
+		$(se).addClass("item-selected").siblings("li").removeClass("item-selected");
 	})
 	$(".carousel-control a").on("click", function(e) {
 		var se = e.target;

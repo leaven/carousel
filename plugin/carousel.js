@@ -36,8 +36,6 @@
             var carousel = Object.create(Carousel);
             carousel.init(options, this);
             $(this).data("bdvCarousel", carousel);
-           // this.prototype = carousel;
-           // return this;
         });
 	};
 	$.fn.bdvCarousel.options = {
@@ -61,6 +59,9 @@
 			var self = this;
 			//容器
 			self.$elm = $(el);
+			
+			//容器节点
+			self.$carouselList = $(".carousel li");
 
 			//控制点
 			self.$dotList = $(".carousel-dot li");
@@ -69,23 +70,6 @@
 			self.num = self.getTotalCount();
 
 			self.options = $.extend({}, $.fn.bdvCarousel.options, options);
-
-			if(self.options.animate =="slide2dHorizontal") {
-				self.left = self.options.containerWidth * self.options.originalIndex;
-				self.maxWidth = self.options.containerWidth * self.num;
-				self.$elm.css("width", self.maxWidth);
-				self.direction = "left";
-				self.size = self.options.containerWidth;
-				self.maxSize = self.maxWidth;
-			}
-			if(self.options.animate =="slide2dVertical") {
-				self.top = self.options.containerHeight * self.options.originalIndex;
-				self.maxHeight = self.options.containerHeight * self.num;
-				self.$elm.css("height", self.maxHeight);
-				self.direction = "top";
-				self.size = self.options.containerHeight;
-				self.maxSize = self.maxHeight;
-			}
 
 			/**
 				* @vars   {Number}  pos        定义焦点区所在位置
@@ -109,8 +93,34 @@
 				}
 			}
 
-			self.initData = self.axis[self.options.animate];
-			console.log(self.initData);
+			//如果是slide效果
+			if(self.options.animate.indexOf("slide") != -1) {
+
+				self.initData = self.axis[self.options.animate];
+
+				if(self.options.animate =="slide2dHorizontal") {
+					self.$elm.css("width", self.initData.maxSize);
+				}
+				if(self.options.animate =="slide2dVertical") {
+					self.$elm.css("height", self.initData.maxSize);
+				}
+			}else {
+				//淡入淡出效果
+				self.$elm.css("width", self.options.containerWidth);
+				self.$elm.css("position", "relative");
+				$(".carousel li").each(function(i,n){
+					$(n).css({
+						"float" : "none",
+						"position" : "absolute",
+						"left" : 0,
+						"top" : 0,
+						"opacity" : 0
+					});
+					if(i == self.options.originalIndex) {
+						$(n).css("opacity",1);
+					}
+				})
+			}
 			self.start();
 		},
 
@@ -148,8 +158,12 @@
 		goTo : function(index) {
 			var self = this;
 			self.stop();
-			self.initData.pos = 0 - self.initData.offsetSize * index;
-			self.animate();
+			if(self.options.animate.indexOf("slide") != -1) {
+				self.initData.pos = 0 - self.initData.offsetSize * index;
+				self.animate();
+			}else{
+				self.fadeAnimate(self.getCurrentIndex(), index);
+			}
 			self.start();
 		},
 		
@@ -171,12 +185,17 @@
 			self.$dotList.eq(curIndex).removeClass("item-selected");
 			self.$dotList.eq(nextIndex).addClass("item-selected");
 
-			self.initData.pos -= self.initData.offsetSize;
+			if(self.options.animate.indexOf("slide") != -1) {
+				self.initData.pos -= self.initData.offsetSize;
 
-			if(Math.abs(self.initData.pos) >= self.initData.maxSize){
-				self.initData.pos = 0;
-			}
-			self.animate();
+				if(Math.abs(self.initData.pos) >= self.initData.maxSize){
+					self.initData.pos = 0;
+				}
+				self.animate();
+		  	}else{
+		  		self.fadeAnimate(curIndex, nextIndex);
+		  	}
+
 			self.start();
 
 		},
@@ -190,13 +209,19 @@
 
 			self.$dotList.eq(curIndex).removeClass("item-selected");
 			self.$dotList.eq(nextIndex).addClass("item-selected");
-			self.initData.pos += self.initData.offsetSize;
 
-			if(self.initData.pos > 0){
-				self.initData.pos = self.initData.offsetSize - self.initData.maxSize;
+			if(self.options.animate.indexOf("slide") != -1) {
+				self.initData.pos += self.initData.offsetSize;
+
+				if(self.initData.pos > 0){
+					self.initData.pos = self.initData.offsetSize - self.initData.maxSize;
+				}
+				self.animate();
+				self.start();
+			}else{
+				self.fadeAnimate(curIndex, nextIndex);
 			}
-			self.animate();
-			self.start();
+
 		},
 
 		//取得当前得到焦点项在所有数据项中的索引值
@@ -217,8 +242,20 @@
 			//									  self.options.containerHeight} 根据滚动方向决定用宽度还是高度值 																							 
 			var animateData = {};
 			animateData[self.initData.direction] = self.initData.pos + "px";
-			console.log(animateData);
 			self.$elm.animate(animateData, self.options.duration, self.focused());
+		},
+
+		//淡入淡出函数
+		// @param  {Number}  curIndex  当前选中项
+		// @param  {Number}  nextIndex  下一选中项
+		fadeAnimate : function(curIndex, nextIndex) {
+			var self = this;
+			self.$carouselList.eq(curIndex).animate({
+		  			opacity : 0
+		  		});
+		  	self.$carouselList.eq(nextIndex).animate({
+		  		opacity :1
+		  	});
 		}
 	};
 }(jQuery))
