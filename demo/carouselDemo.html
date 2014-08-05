@@ -14,12 +14,32 @@
    	position:absolute;
 	left:0;
 	top:0;
+	width: 984px;
 	height:500px;
    }
    .carousel li{
-   	float:left;
-	width:984px;
+   	position:absolute;
+	width:570px;
 	height:500px;
+   }
+   .carousel .list1{
+   		margin-top:50px;
+   		height:400px;
+   		left:0;
+   		z-index:0;
+   		opacity: 0.5;
+   }
+   .carousel .list2{
+   		width:570px;
+   		left:207px;
+   		z-index: 3;
+   }	
+   .carousel .list3{
+   		margin-top:50px;
+   		left:777px;
+   		height: 400px;
+   		z-index: 0;
+   		opacity: 0.5;
    }
    .carousel li img{
    	width:100%;
@@ -87,26 +107,29 @@
   <script src="../core/jquery.min.js"></script>
   <script src="../plugin/carousel.js"></script>
   <script>
+
 	$(".carousel").bdvCarousel({
-		containerWidth : 984,
+		outContainer : 984,
+		containerWidth : 570,
 		containerHeight : 500,
-		animate : "fade"
+		originalIndex : 2,
+		animate : "slide3dHorizontal"
 	});
-	var carousel = $(".carousel").data("bdvCarousel");
-	$(".carousel-dot").on("click", function(e) {
-		var se = e.target;
-		if(se.nodeName !="LI")return;
+	// var carousel = $(".carousel").data("bdvCarousel");
+	// $(".carousel-dot").on("click", function(e) {
+	// 	var se = e.target;
+	// 	if(se.nodeName !="LI")return;
 		
-		carousel.goTo($(".carousel-dot li").index(se));
-		$(se).addClass("item-selected").siblings("li").removeClass("item-selected");
-	})
-	$(".carousel-control a").on("click", function(e) {
-		var se = e.target;
-		if(se.className == "prev")
-			carousel.prev();
-		else
-			carousel.next();
-	});
+	// 	carousel.goTo($(".carousel-dot li").index(se));
+	// 	$(se).addClass("item-selected").siblings("li").removeClass("item-selected");
+	// })
+	// $(".carousel-control a").on("click", function(e) {
+	// 	var se = e.target;
+	// 	if(se.className == "prev")
+	// 		carousel.prev();
+	// 	else
+	// 		carousel.next();
+	// });
   </script>
 </body>
 </html>
