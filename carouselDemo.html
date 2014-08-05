@@ -1,0 +1,47 @@
+<html>
+<head>
+<link rel="stylesheet" href="http://list.video.baidu.com/pc_static/common/base.css" />
+<style>
+   #carouselContainer{
+   	width:984px;
+	height:500px;
+	margin:0 auto;
+	overflow:hidden;
+	position:relative;
+   }
+   .carousel{
+   	position:absolute;
+	left:0;
+	top:0;
+	width:1968px;
+	height:500px;
+   }
+   .carousel li{
+   	float:left;
+	width:984px;
+	height:500px;
+   }
+   .carousel li img{
+   	width:100%;
+	height:100%;
+   }
+</style>
+</head>
+<body>
+  <div id="carouselContainer">
+  	<ul class="carousel">
+		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
+		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
+		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
+		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
+		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
+	</ul>
+  </div>
+  <script src="carousel.js"></script>
+  <script>
+	$(".carousel").bdvCarousel({
+				
+	});
+  </script>
+</body>
+</html>

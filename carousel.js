@@ -13,6 +13,7 @@
 	* @config {Number} interval  描述两次滚动的时间间隔，默认3000毫秒
 	* @config {Number} duration  描述每次滚动花费的时间，默认500毫秒
 	* @config {String} direction 取值{backward|forward}，描述向前滚动还是向后滚动，默认backward
+	* @config {Number} containerWidth 描述每一屏的宽度 
 
 **/
 
@@ -47,6 +48,7 @@
 		interval : 3000,
 		duration : 500,
 		direction : 'backward'
+
 	};
 	var Carousel = function() {
 		// 初始化
@@ -81,6 +83,9 @@
 		getCurrentIndex : function() {},
 
 		//取得数据项的总数目
-		getTotalCount : function(){}
+		getTotalCount : function(){},
+
+		//动画函数
+		animate : function(){}
 	};
 }(jQuery))
