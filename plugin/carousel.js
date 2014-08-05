@@ -1,4 +1,6 @@
 /**
+	* @autor liwei
+	* @date   2014/08/05
 	* @function bdvCarousel
 	* @param  {String|HTMLElement} el 一个包含Carousel所需结构的容器对象.
 	* @param  {Object} options 选项.
@@ -93,7 +95,7 @@
 				}
 			}
 
-			//如果是slide效果
+			//slide效果
 			if(self.options.animate.indexOf("slide") != -1) {
 
 				self.initData = self.axis[self.options.animate];
@@ -124,12 +126,31 @@
 			self.start();
 		},
 
-		//渲染
-		render : function() {
+		//图片懒加载函数
+		lazyLoadImg : function(index) {
 			var self = this;
+			var img = self.$elm.children("li").eq(index).children("img")[0];
+			if(!$(img).attr("src")) {
+				$(img).attr("src", $(img).attr("data-src"));
+				$(img).removeAttr("data-src");
+			}
+		},
+		//动画执行前回调
+		beforeRender : function(index) {
+			var self = this;
+			if(self.options.lazyload) {
+				self.lazyLoadImg(index);
+			}
+			
+
 			//self.$elm.children("li").eq(0).attr("");
 		},
-		
+
+		//动画执行后回调
+		afterRender : function() {
+
+		},
+
 		//开始轮播
 		start : function() {
 			var self = this;
@@ -157,6 +178,9 @@
 		//@param {Number} index  元素的索引值 0,1,2,3....
 		goTo : function(index) {
 			var self = this;
+			if(self.options.lazyload) {
+				self.lazyLoadImg(index);
+			}
 			self.stop();
 			if(self.options.animate.indexOf("slide") != -1) {
 				self.initData.pos = 0 - self.initData.offsetSize * index;
@@ -175,13 +199,12 @@
 		//以step为单位翻到下一项
 		next : function() {
 			var self = this;
-
 			//手动滚动时先暂停
 			self.stop();
 
 			var curIndex = self.getCurrentIndex(),
 				nextIndex = (curIndex + 1) % 5;
-
+			self.beforeRender(nextIndex);	
 			self.$dotList.eq(curIndex).removeClass("item-selected");
 			self.$dotList.eq(nextIndex).addClass("item-selected");
 
@@ -206,7 +229,7 @@
 			self.stop();
 			var curIndex = self.getCurrentIndex(),
 				nextIndex = (curIndex + 5 - 1) % 5;
-
+			self.beforeRender(nextIndex);	
 			self.$dotList.eq(curIndex).removeClass("item-selected");
 			self.$dotList.eq(nextIndex).addClass("item-selected");
 
