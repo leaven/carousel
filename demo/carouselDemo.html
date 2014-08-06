@@ -18,28 +18,9 @@
 	height:500px;
    }
    .carousel li{
-   	position:absolute;
+   	float:left;
 	width:570px;
 	height:500px;
-   }
-   .carousel .list1{
-   		margin-top:50px;
-   		height:400px;
-   		left:0;
-   		z-index:0;
-   		opacity: 0.5;
-   }
-   .carousel .list2{
-   		width:570px;
-   		left:207px;
-   		z-index: 3;
-   }	
-   .carousel .list3{
-   		margin-top:50px;
-   		left:777px;
-   		height: 400px;
-   		z-index: 0;
-   		opacity: 0.5;
    }
    .carousel li img{
    	width:100%;
@@ -115,8 +96,9 @@
 		outContainer : 984,
 		containerWidth : 570,
 		containerHeight : 500,
-		originalIndex : 2,
-		animate : "slide3dHorizontal"
+		originalIndex : 0,
+		//animate : "slide3dHorizontal"
+		animate : "fade"
 	});
 	var carousel = $(".carousel").data("bdvCarousel");
 

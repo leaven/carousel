@@ -237,12 +237,21 @@
 		//@param {Number} index  元素的索引值 0,1,2,3....
 		goTo : function(index) {
 			var self = this;
+			self.stop();
 
+			var curIndex = self.getCurrentIndex();
+			self.$elm.children("li").eq(curIndex).removeClass("item-selected");
+			self.$elm.children("li").eq(index).addClass("item-selected");
+
+			if(self.$dotList) {
+				self.$dotList.eq(curIndex).removeClass("dot-selected");
+				self.$dotList.eq(index).addClass("dot-selected");
+			}
 			if(self.options.lazyload) {
-				
+
 				self.lazyLoadImg(index);
 			}
-			self.stop();
+			
 			if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
 
 				self.initData.pos = 0 - self.initData.offsetSize * index;
@@ -250,7 +259,7 @@
 
 			}else if(self.options.animate == "fade"){
 
-				self.fadeAnimate(self.getCurrentIndex(), index);
+				self.fadeAnimate(curIndex, index);
 
 			}
 //			self.$elm.children("li").eq(index).addClass("item-selected").siblings("li").removeClass("item-selected");
@@ -276,24 +285,24 @@
 				self.$dotList.eq(curIndex).removeClass("dot-selected");
 				self.$dotList.eq(nextIndex).addClass("dot-selected");
 			}
-			// //2d水平、垂直滚动
-			// if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
-			// 	self.initData.pos -= self.initData.offsetSize;
+			//2d水平、垂直滚动
+			if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
+				self.initData.pos -= self.initData.offsetSize;
 
-			// 	if(Math.abs(self.initData.pos) >= self.initData.maxSize) {
-			// 		self.initData.pos = 0;
-			// 	}
-			// 	self.animate();
+				if(Math.abs(self.initData.pos) >= self.initData.maxSize) {
+					self.initData.pos = 0;
+				}
+				self.animate();
 
-		 //  	}
-		 //  	//淡入淡出
-		 //  	else if(self.options.animate == "fade") {
+		  	}
+		  	//淡入淡出
+		  	else if(self.options.animate == "fade") {
 
-		 //  		self.fadeAnimate(curIndex, nextIndex);
+		  		self.fadeAnimate(curIndex, nextIndex);
 
-		 //  	}
+		  	}
 		  	//3D水平滚动
-		  	 if(self.options.animate == "slide3dHorizontal") {
+		  	 else if(self.options.animate == "slide3dHorizontal") {
 
 		  		var prevIndex = (curIndex - 1 + self.num) % self.num,
 		  			nnextIndex = (nextIndex + 1) % self.num;
@@ -318,8 +327,6 @@
 		  			}
 		  		];
 		  		self.galleryAnimate(argument);
-		  	}else{
-		  		self.goTo(curIndex);
 		  	}
 
 			self.start();
@@ -344,26 +351,26 @@
 				self.$dotList.eq(nextIndex).addClass("dot-selected");
 			}
 
-			// //2d水平、垂直滚动
-			// if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
+			//2d水平、垂直滚动
+			if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
 				
-			// 	self.initData.pos += self.initData.offsetSize;
+				self.initData.pos += self.initData.offsetSize;
 
-			// 	if(self.initData.pos > 0) {
+				if(self.initData.pos > 0) {
 
-			// 		self.initData.pos = self.initData.offsetSize - self.initData.maxSize;
-			// 	}
-			// 	self.animate();
+					self.initData.pos = self.initData.offsetSize - self.initData.maxSize;
+				}
+				self.animate();
 				
-			// }
-			// //淡入淡出特效
-			// else if(self.options.animate == "fade") {
+			}
+			//淡入淡出特效
+			else if(self.options.animate == "fade") {
 
-		 //  		self.fadeAnimate(curIndex, nextIndex);
+		  		self.fadeAnimate(curIndex, nextIndex);
 
-		 //  	}
+		  	}
 		  	//3d水平轮播
-		  	 if(self.options.animate == "slide3dHorizontal") {
+		  	 else if(self.options.animate == "slide3dHorizontal") {
 		  		var prevIndex = (curIndex + 1) % self.num,
 		  			nnextIndex =(nextIndex - 1 + self.num) % self.num;
 
@@ -387,8 +394,6 @@
 		  		];
 
 		  		self.galleryAnimate(argument);
-		  	}else{
-		  		self.goTo(curIndex);
 		  	}
 		  	self.start();
 		},
@@ -419,9 +424,10 @@
 		// @param  {Number}  nextIndex  下一选中项
 		fadeAnimate : function(curIndex, nextIndex) {
 			var self = this;
+
 			self.$elm.children("li").eq(curIndex).animate({
 		  			opacity : 0
-		  		},self.options.duration, self.focused());
+		  		},self.options.duration, self.afterRender);
 		  	self.$elm.children("li").eq(nextIndex).animate({
 		  		opacity :1
 		  	},self.options.duration, self.afterRender);
