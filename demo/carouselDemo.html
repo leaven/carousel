@@ -5,7 +5,7 @@
 <style>
    #carouselContainer{
    	width:984px;
-	height:500px;
+	height:600px;
 	margin:0 auto;
 	overflow:hidden;
 	position:relative;
@@ -62,7 +62,7 @@
 		border-radius: 5px;
 		background-color: #878689;
    }
-   .carousel-dot li.item-selected{
+   .carousel-dot li.dot-selected{
    		background-color: #FFF
    }
    .carousel-control a{
@@ -86,15 +86,18 @@
 <body>
   <div id="carouselContainer">
   	<ul class="carousel">
-		<li><img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" /></li>
-		<li><img data-src="http://c.hiphotos.baidu.com/image/pic/item/58ee3d6d55fbb2fb593177e74d4a20a44623dc28.jpg" /></li>
-		<li><img data-src="http://h.hiphotos.baidu.com/image/pic/item/6159252dd42a2834c3f759f859b5c9ea14cebff4.jpg" /></li>
-		<li><img data-src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
-		<li><img data-src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
+		<li>
+		<img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
+			<ul><li></li><li></li></ul>
+		</li>
+		<li><img src="http://c.hiphotos.baidu.com/image/pic/item/58ee3d6d55fbb2fb593177e74d4a20a44623dc28.jpg" /></li>
+		<li><img src="http://h.hiphotos.baidu.com/image/pic/item/6159252dd42a2834c3f759f859b5c9ea14cebff4.jpg" /></li>
+		<li><img src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
+		<li><img src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
 	</ul>
 	<div class="carousel-control">
 		<ul class="carousel-dot">
-			<li class="item-selected"></li>
+			<li></li>
 			<li></li>
 			<li></li>
 			<li></li>
@@ -112,25 +115,25 @@
 		outContainer : 984,
 		containerWidth : 570,
 		containerHeight : 500,
-		lazyload : true
 		originalIndex : 2,
 		animate : "slide3dHorizontal"
 	});
-	// var carousel = $(".carousel").data("bdvCarousel");
-	// $(".carousel-dot").on("click", function(e) {
-	// 	var se = e.target;
-	// 	if(se.nodeName !="LI")return;
+	var carousel = $(".carousel").data("bdvCarousel");
+
+	$(".carousel-dot").on("click", function(e) {
+		var se = e.target;
+		if(se.nodeName !="LI")return;
 		
-	// 	carousel.goTo($(".carousel-dot li").index(se));
-	// 	$(se).addClass("item-selected").siblings("li").removeClass("item-selected");
-	// })
-	// $(".carousel-control a").on("click", function(e) {
-	// 	var se = e.target;
-	// 	if(se.className == "prev")
-	// 		carousel.prev();
-	// 	else
-	// 		carousel.next();
-	// });
+		carousel.goTo($(".carousel-dot li").index(se));
+		$(se).addClass("dot-selected").siblings("li").removeClass("dot-selected");
+	})
+	$(".carousel-control a").on("click", function(e) {
+		var se = e.target;
+		if(se.className == "prev")
+			carousel.prev();
+		else
+			carousel.next();
+	});
   </script>
 </body>
 </html>
