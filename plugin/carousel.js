@@ -16,7 +16,8 @@
 	* @config {String} direction 取值{forward|backward}，描述向前滚动还是向后滚动，默认forward
 	* @config {Number} containerWidth 描述每一屏的宽度，默认984 
 	* @config {Number} containerHeight 描述每一屏的宽度，默认500
-	* @config {Boolean} lazyload  是否开启图片懒加载 默认false 
+	* @config {Boolean} lazyload  是否开启图片懒加载 默认false
+	* @config {Array}   controlDot 描述控制点容器 
 
 **/
 
@@ -65,7 +66,7 @@
 			
 
 			//控制容器
-			self.$dotList = $(".carousel-dot li");
+			self.$dotList = self.$elm.parent().find(".carousel-dot");
 			
 			//屏数
 			self.num = self.getTotalCount();
@@ -180,7 +181,7 @@
 		resetCarousel : function() {
 			var self = this;
 			if(self.$dotList) {
-				self.$dotList.eq(self.options.originalIndex).addClass("dot-selected");
+				self.$dotList.children("li").eq(self.options.originalIndex).addClass("dot-selected");
 			}
 			self.$elm.children("li").eq(self.options.originalIndex).addClass("item-selected")
 
@@ -244,8 +245,8 @@
 			self.$elm.children("li").eq(index).addClass("item-selected");
 
 			if(self.$dotList) {
-				self.$dotList.eq(curIndex).removeClass("dot-selected");
-				self.$dotList.eq(index).addClass("dot-selected");
+				self.$dotList.children("li").eq(curIndex).removeClass("dot-selected");
+				self.$dotList.children("li").eq(index).addClass("dot-selected");
 			}
 			if(self.options.lazyload) {
 
@@ -282,8 +283,8 @@
 			self.$elm.children("li").eq(nextIndex).addClass("item-selected");
 
 			if(self.$dotList) {
-				self.$dotList.eq(curIndex).removeClass("dot-selected");
-				self.$dotList.eq(nextIndex).addClass("dot-selected");
+				self.$dotList.children("li").eq(curIndex).removeClass("dot-selected");
+				self.$dotList.children("li").eq(nextIndex).addClass("dot-selected");
 			}
 			//2d水平、垂直滚动
 			if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
@@ -347,8 +348,8 @@
 			self.$elm.children("li").eq(nextIndex).addClass("item-selected");
 
 			if(self.$dotList) {
-				self.$dotList.eq(curIndex).removeClass("dot-selected");
-				self.$dotList.eq(nextIndex).addClass("dot-selected");
+				self.$dotList.children("li").eq(curIndex).removeClass("dot-selected");
+				self.$dotList.children("li").eq(nextIndex).addClass("dot-selected");
 			}
 
 			//2d水平、垂直滚动
@@ -435,10 +436,10 @@
 
 		/**
 		 * @des	   3d水平轮播
-		 * @param  {Number}  nnextIndex   不在轮播区域的一张图，它将替换nextIndex位置的图片
-		 * @param  {Number}  nextIndex    将要成为主焦点的图，它将替换curIndex位置
-		 * @param  {Number}  curIndex     当前焦点位置的图片
-		 * @param  {Number}  prevIndex    当前焦点图前一张图，它将被焦点图替换
+		 * @param  {Array}   {
+				pos : ''   //描述滚动项的索引
+				animate : '' //描述滚动项的动画效果，根据statusData中的key决定
+		 }
 		**/
 		galleryAnimate : function(argumentArray){
 			var self = this;
