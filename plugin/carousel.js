@@ -47,6 +47,7 @@
 		step : 1,
 		containerWidth : 984,
 		containerHeight : 500,
+		outContainer : 984,
 		animate : 'slide2dHorizontal',
 		autoScroll : true,
 		interval : 3000,
@@ -105,6 +106,51 @@
 				}
 				if(self.options.animate =="slide2dVertical") {
 					self.$elm.css("height", self.initData.maxSize);
+				}
+				if(self.options.animate == "slide3dHorizontal") {
+					self.$elm.children("li").each(function(i, n){
+						if(i == (self.options.originalIndex + self.num- 1) % self.num) {
+							$(n).css({
+								"position" : "absolute",
+								"width" : self.options.containerWidth * 0.8,
+								"height" : self.options.containerHeight * 0.8,
+								"margin-top" : self.options.containerHeight * 0.1,
+								"left" : 0,
+								"opacity" : 0.5,
+								"z-index" : 0
+							});
+						}else if(i == self.options.originalIndex){
+							$(n).css({
+								"position" : "absolute",
+								"width" : self.options.containerWidth,
+								"height" : self.options.containerHeight,
+								"left" : (self.options.outContainer - self.options.containerWidth)/2,
+								"opacity" : 1,
+								"z-index" : 3
+							});
+						}else if(i == (self.options.originalIndex + 1) % self.num) {
+							$(n).css({
+								"position" : "absolute",
+								"width" : self.options.containerWidth * 0.8,
+								"height" : self.options.containerHeight * 0.8,
+								"margin-top" : self.options.containerHeight * 0.1,
+								"left" : (self.options.outContainer + self.options.containerWidth)/2,
+								"opacity" : 0.5,
+								"z-index" : 0
+							});
+						}else {
+							$(n).css({
+								"position" : "absolute",
+								"width" : self.options.containerWidth * 0.8,
+								"height" : self.options.containerHeight * 0.4,
+								"left" : 0 - self.options.containerWidth * 0.8,
+								"margin-top" : self.options.containerHeight * 0.3,
+								"opacity" : 0,
+								"z-index" : 0
+							});
+						}
+
+					})
 				}
 			}else {
 				//淡入淡出效果
@@ -208,15 +254,17 @@
 			self.$dotList.eq(curIndex).removeClass("item-selected");
 			self.$dotList.eq(nextIndex).addClass("item-selected");
 
-			if(self.options.animate.indexOf("slide") != -1) {
+			if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
 				self.initData.pos -= self.initData.offsetSize;
 
 				if(Math.abs(self.initData.pos) >= self.initData.maxSize){
 					self.initData.pos = 0;
 				}
 				self.animate();
-		  	}else{
+		  	}else if(self.options.animate == "fade"){
 		  		self.fadeAnimate(curIndex, nextIndex);
+		  	}else if(self.options.animate == "slide3dHorizontal"){
+		  		self.galleryAnimate((curIndex-1 + 5) % 5, curIndex, nextIndex);
 		  	}
 
 			self.start();
@@ -233,7 +281,7 @@
 			self.$dotList.eq(curIndex).removeClass("item-selected");
 			self.$dotList.eq(nextIndex).addClass("item-selected");
 
-			if(self.options.animate.indexOf("slide") != -1) {
+			if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
 				self.initData.pos += self.initData.offsetSize;
 
 				if(self.initData.pos > 0){
@@ -241,9 +289,11 @@
 				}
 				self.animate();
 				self.start();
-			}else{
-				self.fadeAnimate(curIndex, nextIndex);
-			}
+			}else if(self.options.animate == "fade"){
+		  		self.fadeAnimate(curIndex, nextIndex);
+		  	}else if(self.options.animate == "slide3dHorizontal"){
+		  		self.galleryAnimate((curIndex + 1) % self.num, curIndex, nextIndex);
+		  	}
 
 		},
 
@@ -279,6 +329,42 @@
 		  	self.$carouselList.eq(nextIndex).animate({
 		  		opacity :1
 		  	});
+		},
+		//
+		galleryAnimate : function(prevIndex, curIndex, nextIndex){
+			var self = this;
+			var pprevIndex = (prevIndex + 5 -1) % 5;
+			self.$elm.children("li").eq(prevIndex).animate({
+				"width" : self.options.containerWidth * 0.8,
+				"height" : self.options.containerHeight * 0.8,
+				"margin-top" : self.options.containerHeight * 0.1,
+				"left" : 0,
+				"opacity" : 0.5,
+				"z-index" : 0
+			});
+			self.$elm.children("li").eq(prevIndex).animate({
+				"width" : self.options.containerWidth,
+				"height" : self.options.containerHeight,
+				"left" : (self.options.outContainer - self.options.containerWidth)/2,
+				"opacity" : 1,
+				"z-index" : 3
+			});
+			self.$elm.children("li").eq(curIndex).animate({
+				"width" : self.options.containerWidth * 0.8,
+				"height" : self.options.containerHeight * 0.8,
+				"margin-top" : self.options.containerHeight * 0.1,
+				"left" : (self.options.outContainer + self.options.containerWidth)/2,
+				"opacity" : 0.5,
+				"z-index" : 0
+			});
+			self.$elm.children("li").eq(nextIndex).animate({
+				"width" : self.options.containerWidth * 0.8,
+				"height" : self.options.containerHeight * 0.4,
+				"left" : 0 - self.options.containerWidth * 0.8,
+				"margin-top" : self.options.containerHeight * 0.3,
+				"opacity" : 0,
+				"z-index" : 0
+			});
 		}
 	};
 }(jQuery))
