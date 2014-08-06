@@ -1,4 +1,6 @@
 /**
+	* @autor liwei
+	* @date   2014/08/05
 	* @function bdvCarousel
 	* @param  {String|HTMLElement} el 一个包含Carousel所需结构的容器对象.
 	* @param  {Object} options 选项.
@@ -14,7 +16,8 @@
 	* @config {String} direction 取值{forward|backward}，描述向前滚动还是向后滚动，默认forward
 	* @config {Number} containerWidth 描述每一屏的宽度，默认984 
 	* @config {Number} containerHeight 描述每一屏的宽度，默认500
-	* @config {Boolean} lazyload  是否开启图片懒加载 默认false 
+	* @config {Boolean} lazyload  是否开启图片懒加载 默认false
+	* @config {Array}   controlDot 描述控制点容器 
 
 **/
 
@@ -61,16 +64,19 @@
 			//容器
 			self.$elm = $(el);
 			
-			//容器节点
-			self.$carouselList = $(".carousel li");
 
-			//控制点
-			self.$dotList = $(".carousel-dot li");
+			//控制容器
+			self.$dotList = self.$elm.parent().find(".carousel-dot");
 			
 			//屏数
 			self.num = self.getTotalCount();
 
+			
+
 			self.options = $.extend({}, $.fn.bdvCarousel.options, options);
+
+			//初始化组件,必须在self.options之后
+			self.resetCarousel();
 
 			/**
 				* @vars   {Number}  pos        定义焦点区所在位置
@@ -94,7 +100,7 @@
 				}
 			}
 
-			//如果是slide效果
+			//slide效果
 			if(self.options.animate.indexOf("slide") != -1) {
 
 				self.initData = self.axis[self.options.animate];
@@ -150,11 +156,12 @@
 
 					})
 				}
-			}else {
+			}
+			if(self.options.animate == "fade") {
 				//淡入淡出效果
 				self.$elm.css("width", self.options.containerWidth);
 				self.$elm.css("position", "relative");
-				$(".carousel li").each(function(i,n){
+				self.$elm.children("li").each(function(i,n){
 					$(n).css({
 						"float" : "none",
 						"position" : "absolute",
@@ -170,12 +177,41 @@
 			self.start();
 		},
 
-		//渲染
-		render : function() {
+		//获取首次加载的时候控制点所在的位置
+
+		resetCarousel : function() {
 			var self = this;
+			if(self.$dotList) {
+				self.$dotList.children("li").eq(self.options.originalIndex).addClass("dot-selected");
+			}
+			self.$elm.children("li").eq(self.options.originalIndex).addClass("item-selected")
+
+		},
+		//图片懒加载函数，替换其中的data-src值
+		lazyLoadImg : function(index) {
+			var self = this;
+			var img = self.$elm.children("li").eq(index).children("img")[0];
+			if(!$(img).attr("src")) {
+				$(img).attr("src", $(img).attr("data-src"));
+				$(img).removeAttr("data-src");
+			}
+		},
+		//动画执行前回调
+		beforeRender : function(index) {
+			var self = this;
+			if(self.options.lazyload) {
+				self.lazyLoadImg(index);
+			}
+			
+
 			//self.$elm.children("li").eq(0).attr("");
 		},
-		
+
+		//动画执行后回调
+		afterRender : function() {
+			console.log("complete");
+		},
+
 		//开始轮播
 		start : function() {
 			var self = this;
@@ -204,44 +240,95 @@
 		goTo : function(index) {
 			var self = this;
 			self.stop();
-			if(self.options.animate.indexOf("slide") != -1) {
+
+			var curIndex = self.getCurrentIndex();
+			self.$elm.children("li").eq(curIndex).removeClass("item-selected");
+			self.$elm.children("li").eq(index).addClass("item-selected");
+
+			if(self.$dotList) {
+				self.$dotList.children("li").eq(curIndex).removeClass("dot-selected");
+				self.$dotList.children("li").eq(index).addClass("dot-selected");
+			}
+			if(self.options.lazyload) {
+
+				self.lazyLoadImg(index);
+			}
+			
+			if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
+
 				self.initData.pos = 0 - self.initData.offsetSize * index;
 				self.animate();
-			}else{
-				self.fadeAnimate(self.getCurrentIndex(), index);
+
+			}else if(self.options.animate == "fade"){
+
+				self.fadeAnimate(curIndex, index);
+
 			}
+//			self.$elm.children("li").eq(index).addClass("item-selected").siblings("li").removeClass("item-selected");
 			self.start();
-		},
-		
-		//一次滚动完成后的回调
-		focused : function() {
-			console.log("complete");
 		},
 
 		//以step为单位翻到下一项
 		next : function() {
 			var self = this;
-
 			//手动滚动时先暂停
 			self.stop();
 
 			var curIndex = self.getCurrentIndex(),
-				nextIndex = (curIndex + 1) % 5;
+				nextIndex = (curIndex + 1) % self.num;
+			
+			//动画执行前的回调
+			self.beforeRender(nextIndex);	
 
-			self.$dotList.eq(curIndex).removeClass("item-selected");
-			self.$dotList.eq(nextIndex).addClass("item-selected");
+			self.$elm.children("li").eq(curIndex).removeClass("item-selected");
+			self.$elm.children("li").eq(nextIndex).addClass("item-selected");
 
+			if(self.$dotList) {
+				self.$dotList.children("li").eq(curIndex).removeClass("dot-selected");
+				self.$dotList.children("li").eq(nextIndex).addClass("dot-selected");
+			}
+			//2d水平、垂直滚动
 			if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
 				self.initData.pos -= self.initData.offsetSize;
 
-				if(Math.abs(self.initData.pos) >= self.initData.maxSize){
+				if(Math.abs(self.initData.pos) >= self.initData.maxSize) {
 					self.initData.pos = 0;
 				}
 				self.animate();
-		  	}else if(self.options.animate == "fade"){
+
+		  	}
+		  	//淡入淡出
+		  	else if(self.options.animate == "fade") {
+
 		  		self.fadeAnimate(curIndex, nextIndex);
-		  	}else if(self.options.animate == "slide3dHorizontal"){
-		  		self.galleryAnimate((curIndex-1 + 5) % 5, curIndex, nextIndex);
+
+		  	}
+		  	//3D水平滚动
+		  	 else if(self.options.animate == "slide3dHorizontal") {
+
+		  		var prevIndex = (curIndex - 1 + self.num) % self.num,
+		  			nnextIndex = (nextIndex + 1) % self.num;
+		  		self.galleryAnimate(nnextIndex, nextIndex, curIndex, prevIndex);
+		  		
+		  		var argument = [
+		  			{
+		  				pos : nnextIndex,
+		  				animate : "smallRight"
+		  			},
+		  			{
+		  				pos : nextIndex,
+		  				animate : "bigCenter"
+		  			},
+		  			{
+		  				pos : curIndex,
+		  				animate : "smallLeft"
+		  			},
+		  			{
+		  				pos : prevIndex,
+		  				animate : "backHidden"
+		  			}
+		  		];
+		  		self.galleryAnimate(argument);
 		  	}
 
 			self.start();
@@ -253,38 +340,77 @@
 			var self = this;
 			self.stop();
 			var curIndex = self.getCurrentIndex(),
-				nextIndex = (curIndex + 5 - 1) % 5;
+				nextIndex = (curIndex + self.num - 1) % self.num;
 
-			self.$dotList.eq(curIndex).removeClass("item-selected");
-			self.$dotList.eq(nextIndex).addClass("item-selected");
+			//加载前回调
+			self.beforeRender(nextIndex);
 
+			self.$elm.children("li").eq(curIndex).removeClass("item-selected");
+			self.$elm.children("li").eq(nextIndex).addClass("item-selected");
+
+			if(self.$dotList) {
+				self.$dotList.children("li").eq(curIndex).removeClass("dot-selected");
+				self.$dotList.children("li").eq(nextIndex).addClass("dot-selected");
+			}
+
+			//2d水平、垂直滚动
 			if(self.options.animate == "slide2dHorizontal" || self.options.animate == "slide2dVertical") {
+				
 				self.initData.pos += self.initData.offsetSize;
 
-				if(self.initData.pos > 0){
+				if(self.initData.pos > 0) {
+
 					self.initData.pos = self.initData.offsetSize - self.initData.maxSize;
 				}
 				self.animate();
-				self.start();
-			}else if(self.options.animate == "fade"){
-		  		self.fadeAnimate(curIndex, nextIndex);
-		  	}else if(self.options.animate == "slide3dHorizontal"){
-		  		self.galleryAnimate((curIndex + 1) % self.num, curIndex, nextIndex);
-		  	}
+				
+			}
+			//淡入淡出特效
+			else if(self.options.animate == "fade") {
 
+		  		self.fadeAnimate(curIndex, nextIndex);
+
+		  	}
+		  	//3d水平轮播
+		  	 else if(self.options.animate == "slide3dHorizontal") {
+		  		var prevIndex = (curIndex + 1) % self.num,
+		  			nnextIndex =(nextIndex - 1 + self.num) % self.num;
+
+		  		var argument = [
+		  			{
+		  				pos : nnextIndex,
+		  				animate : "smallLeft"
+		  			},
+		  			{
+		  				pos : nextIndex,
+		  				animate : "bigCenter"
+		  			},
+		  			{
+		  				pos : curIndex,
+		  				animate : "smallRight"
+		  			},
+		  			{
+		  				pos : prevIndex,
+		  				animate : "backHidden"
+		  			}
+		  		];
+
+		  		self.galleryAnimate(argument);
+		  	}
+		  	self.start();
 		},
 
 		//取得当前得到焦点项在所有数据项中的索引值
 		getCurrentIndex : function() {
-			return $(".carousel-dot li").index($(".item-selected"))
+			return this.$elm.children("li").index(this.$elm.children(".item-selected"))
 		},
 
 		//取得数据项的总数目
 		getTotalCount : function(){
-			return $(".carousel").children().length;
+			return this.$elm.children().length;
 		},
 
-		//动画函数
+		//2d水平、垂直动画函数
 		animate : function() {
 			var self = this;
 			// @vars {String}    self.direction  {left|top}               根据滚动效果决定方向
@@ -292,7 +418,7 @@
 			//									  self.options.containerHeight} 根据滚动方向决定用宽度还是高度值 																							 
 			var animateData = {};
 			animateData[self.initData.direction] = self.initData.pos + "px";
-			self.$elm.animate(animateData, self.options.duration, self.focused());
+			self.$elm.animate(animateData, self.options.duration, self.afterRender);
 		},
 
 		//淡入淡出函数
@@ -300,48 +426,65 @@
 		// @param  {Number}  nextIndex  下一选中项
 		fadeAnimate : function(curIndex, nextIndex) {
 			var self = this;
-			self.$carouselList.eq(curIndex).animate({
-		  			opacity : 0
-		  		});
-		  	self.$carouselList.eq(nextIndex).animate({
-		  		opacity :1
-		  	});
-		},
-		//
-		galleryAnimate : function(prevIndex, curIndex, nextIndex){
-			var self = this;
-			var pprevIndex = (prevIndex + 5 -1) % 5;
-			self.$elm.children("li").eq(prevIndex).animate({
-				"width" : self.options.containerWidth * 0.8,
-				"height" : self.options.containerHeight * 0.8,
-				"margin-top" : self.options.containerHeight * 0.1,
-				"left" : 0,
-				"opacity" : 0.5,
-				"z-index" : 0
-			});
-			self.$elm.children("li").eq(prevIndex).animate({
-				"width" : self.options.containerWidth,
-				"height" : self.options.containerHeight,
-				"left" : (self.options.outContainer - self.options.containerWidth)/2,
-				"opacity" : 1,
-				"z-index" : 3
-			});
+
 			self.$elm.children("li").eq(curIndex).animate({
-				"width" : self.options.containerWidth * 0.8,
-				"height" : self.options.containerHeight * 0.8,
-				"margin-top" : self.options.containerHeight * 0.1,
-				"left" : (self.options.outContainer + self.options.containerWidth)/2,
-				"opacity" : 0.5,
-				"z-index" : 0
-			});
-			self.$elm.children("li").eq(nextIndex).animate({
-				"width" : self.options.containerWidth * 0.8,
-				"height" : self.options.containerHeight * 0.4,
-				"left" : 0 - self.options.containerWidth * 0.8,
-				"margin-top" : self.options.containerHeight * 0.3,
-				"opacity" : 0,
-				"z-index" : 0
-			});
+		  			opacity : 0
+		  		},self.options.duration, self.afterRender);
+		  	self.$elm.children("li").eq(nextIndex).animate({
+		  		opacity :1
+		  	},self.options.duration, self.afterRender);
+		},
+
+		/**
+		 * @des	   3d水平轮播
+		 * @param  {Array}   {
+				pos : ''   //描述滚动项的索引
+				animate : '' //描述滚动项的动画效果，根据statusData中的key决定
+		 }
+		**/
+		galleryAnimate : function(argumentArray){
+			var self = this;
+
+			//定义四种图片的状态信息
+			var statusData = {
+				smallLeft : {
+					"width" : self.options.containerWidth * 0.8,
+					"height" : self.options.containerHeight * 0.8,
+					"margin-top" : self.options.containerHeight * 0.1,
+					"left" : 0,
+					"opacity" : 0.5,
+					"z-index" : 0
+				},
+				bigCenter : {
+					"width" : self.options.containerWidth,
+					"height" : self.options.containerHeight,
+					"left" : (self.options.outContainer - self.options.containerWidth)/2,
+					"margin-top" :0,
+					"opacity" : 1,
+					"z-index" : 3
+				},
+				smallRight : {
+					"width" : self.options.containerWidth * 0.8,
+					"height" : self.options.containerHeight * 0.8,
+					"margin-top" : self.options.containerHeight * 0.1,
+					"left" : (self.options.outContainer + self.options.containerWidth)/2,
+					"opacity" : 0.5,
+					"z-index" : 0
+				},
+				backHidden : {
+					"width" : self.options.containerWidth * 0.8,
+					"height" : self.options.containerHeight * 0.4,
+					"left" : 0 - self.options.containerWidth * 0.8,
+					"margin-top" : self.options.containerHeight * 0.3,
+					"opacity" : 0,
+					"z-index" : 0
+				}
+			};
+			for(var i = 0, len = argumentArray.length; i < len; i++) {
+
+				var animateData = statusData[argumentArray[i].animate];
+				self.$elm.children("li").eq(argumentArray[i].pos).animate(animateData, self.options.duration);
+			}
 		}
 	};
 }(jQuery))

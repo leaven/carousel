@@ -6,11 +6,11 @@
 <style>
   /*3D*/
    #carouselContainer{
-        width:984px;
-        height:600px;
-        margin:0 auto;
-        overflow:hidden;
-        position:relative;
+  	width:984px;
+	height:600px;
+	margin:0 auto;
+	overflow:hidden;
+	position:relative;
    }
    .carousel{
         position:absolute;
@@ -50,7 +50,55 @@
         width:984px;
         height:500px;
    }
-   .carousel li img{
+   .h-carousel li img{
+        width:100%;
+        height:100%;
+   }
+    /*vertical*/
+   #vCarouselContainer{
+        width:984px;
+        height:500px;
+        margin:0 auto;
+        overflow:hidden;
+        position:relative;
+   }
+   .v-carousel{
+        position:absolute;
+        left:0;
+        top:0;
+        width: 984px;
+        height:500px;
+   }
+   .v-carousel li{
+        float:left;
+        width:984px;
+        height:500px;
+   }
+   .v-carousel li img{
+        width:100%;
+        height:100%;
+   }
+   /*fade*/
+     #fCarouselContainer{
+        width:984px;
+        height:500px;
+        margin:100px auto;
+        overflow:hidden;
+        position:relative;
+   }
+   .f-carousel{
+        position:absolute;
+        left:0;
+        top:0;
+        width: 984px;
+        height:500px;
+   }
+   .f-carousel li{
+        float:left;
+        width:984px;
+        height:500px;
+   }
+   .f-carousel li img{
         width:100%;
         height:100%;
    }
@@ -72,7 +120,7 @@
                 background-color: #878689;
    }
    .carousel-dot li.dot-selected{
-                background-color: #FFF
+   		background-color: #FFF
    }
    .carousel-control a{
                 display: block;
@@ -166,34 +214,105 @@
                 </ul>
                 <a class="prev" href="javascript:void(0)"></a>
                 <a class="next" href="javascript:void(0)"></a>          
-        </div>
+        </div>	
+	</div>
+   <div id="vCarouselContainer">
+        <ul class="v-carousel">
+                <li>
+                <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
+                        <ul><li></li><li></li></ul>
+                </li>
+                <li><img src="http://c.hiphotos.baidu.com/image/pic/item/58ee3d6d55fbb2fb593177e74d4a20a44623dc28.jpg" /></li>
+                <li><img src="http://h.hiphotos.baidu.com/image/pic/item/6159252dd42a2834c3f759f859b5c9ea14cebff4.jpg" /></li>
+                <li><img src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
+                <li><img src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
+        </ul>
+        <div class="carousel-control">
+                <ul class="carousel-dot">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                </ul>
+                <a class="prev" href="javascript:void(0)"></a>
+                <a class="next" href="javascript:void(0)"></a>          
+        </div>  
+  </div>
+   <div id="fCarouselContainer">
+        <ul class="f-carousel">
+                <li>
+                <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
+                        <ul><li></li><li></li></ul>
+                </li>
+                <li><img src="http://c.hiphotos.baidu.com/image/pic/item/58ee3d6d55fbb2fb593177e74d4a20a44623dc28.jpg" /></li>
+                <li><img src="http://h.hiphotos.baidu.com/image/pic/item/6159252dd42a2834c3f759f859b5c9ea14cebff4.jpg" /></li>
+                <li><img src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
+                <li><img src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
+        </ul>
+        <div class="carousel-control">
+                <ul class="carousel-dot">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                </ul>
+                <a class="prev" href="javascript:void(0)"></a>
+                <a class="next" href="javascript:void(0)"></a>          
+        </div>  
   </div>
   <script src="../core/jquery.min.js"></script>
   <script src="../plugin/carousel.js"></script>
   <script>
+  
+    //3d image
+    $(".carousel").bdvCarousel({
+            outContainer : 984,
+            containerWidth : 570,
+            containerHeight : 500,
+            originalIndex : 0,
+            animate : "slide3dHorizontal"
+            //animate : "fade"
+    });
+    //font
     $(".newscarousel").bdvCarousel({
         containerWidth : 984,
                 containerHeight : 20,
                 originalIndex : 0,
                 animate : "slide2dVertical"
     });
-        $(".carousel").bdvCarousel({
-                outContainer : 984,
-                containerWidth : 570,
-                containerHeight : 500,
-                originalIndex : 0,
-                animate : "slide3dHorizontal"
-                //animate : "fade"
-        });
-        $(".h-carousel").bdvCarousel({
-                outContainer : 984,
-                containerWidth : 570,
-                containerHeight : 500,
-                originalIndex : 0,
-                animate : "slide3dHorizontal"
-                //animate : "fade"
-        });
-        var carousel = $(".carousel").data("bdvCarousel");
+    //2d  image
+    $(".h-carousel").bdvCarousel({
+            outContainer : 984,
+            containerWidth : 984,
+            containerHeight : 500,
+            originalIndex : 0,
+           // animate : "slide3dHorizontal"
+            animate : "slide2dHorizontal"
+            //animate : "fade"
+    });
+     //2d  image
+    $(".v-carousel").bdvCarousel({
+            outContainer : 984,
+            containerWidth : 984,
+            containerHeight : 500,
+            originalIndex : 0,
+           // animate : "slide3dHorizontal"
+            animate : "slide2dVertical"
+            //animate : "fade"
+    });
+    //fade
+    $(".f-carousel").bdvCarousel({
+            outContainer : 984,
+            containerWidth : 984,
+            containerHeight : 500,
+            originalIndex : 0,
+           // animate : "slide3dHorizontal"
+           // animate : "slide2dHorizontal"
+            animate : "fade"
+    });
+    var carousel = $(".carousel").data("bdvCarousel");
 
         $(".carousel-dot").on("click", function(e) {
                 var se = e.target;
