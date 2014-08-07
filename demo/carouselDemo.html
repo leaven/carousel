@@ -12,19 +12,19 @@
 	overflow:hidden;
 	position:relative;
    }
-   .carousel{
+   #carouselContainer .bdv-carousel-list{
         position:absolute;
         left:0;
         top:0;
         width: 984px;
         height:500px;
    }
-   .carousel li{
+   #carouselContainer .bdv-carousel-list li{
         float:left;
         width:570px;
         height:500px;
    }
-   .carousel li img{
+   #carouselContainer .bdv-carousel-list li img{
         width:100%;
         height:100%;
    }
@@ -38,19 +38,19 @@
         overflow:hidden;
         position:relative;
    }
-   .h-carousel{
+   #hCarouselContainer .bdv-carousel-list{
         position:absolute;
         left:0;
         top:0;
         width: 984px;
         height:500px;
    }
-   .h-carousel li{
+   #hCarouselContainer .bdv-carousel-list li{
         float:left;
         width:984px;
         height:500px;
    }
-   .h-carousel li img{
+   #hCarouselContainer .bdv-carousel-list li img{
         width:100%;
         height:100%;
    }
@@ -62,19 +62,19 @@
         overflow:hidden;
         position:relative;
    }
-   .v-carousel{
+   #vCarouselContainer .bdv-carousel-list{
         position:absolute;
         left:0;
         top:0;
         width: 984px;
         height:500px;
    }
-   .v-carousel li{
+   #vCarouselContainer .bdv-carousel-list li{
         float:left;
         width:984px;
         height:500px;
    }
-   .v-carousel li img{
+   #vCarouselContainer .bdv-carousel-list li img{
         width:100%;
         height:100%;
    }
@@ -86,23 +86,23 @@
         overflow:hidden;
         position:relative;
    }
-   .f-carousel{
+   #fCarouselContainer .bdv-carousel-list{
         position:absolute;
         left:0;
         top:0;
         width: 984px;
         height:500px;
    }
-   .f-carousel li{
+   #fCarouselContainer .bdv-carousel-list li{
         float:left;
         width:984px;
         height:500px;
    }
-   .f-carousel li img{
+   #fCarouselContainer .bdv-carousel-list li img{
         width:100%;
         height:100%;
    }
-   .carousel-control .carousel-dot{
+   .bdv-carousel-control .bdv-carousel-dot{
          width:984px;
          height:30px;
          position: absolute;
@@ -110,7 +110,7 @@
          bottom:30px;
          text-align: center;
    }
-   .carousel-dot li{
+   .bdv-carousel-dot li{
                 display: inline-block;_display:inline;
                 cursor: pointer;
                 width: 10px;
@@ -119,10 +119,10 @@
                 border-radius: 5px;
                 background-color: #878689;
    }
-   .carousel-dot li.dot-selected{
+   .bdv-carousel-dot li.dot-selected{
    		background-color: #FFF
    }
-   .carousel-control a{
+   .bdv-carousel-control a{
                 display: block;
                 position: absolute;
                 top: 50%;
@@ -131,10 +131,10 @@
                 height: 80px;
                 background: url('http://vs5.bdstatic.com/browse_static/widget/city/focus/arrow_e365e085.png') -80px 0 no-repeat;
    }
-   .carousel-control a.prev{
+   .bdv-carousel-control .bdv-carousel-prev{
                 left:0;
    }
-   .carousel-control a.next{
+   .bdv-carousel-control .bdv-carousel-next{
                 right: 0;
                 background-position: -80px -80px;
    }
@@ -145,14 +145,14 @@
                 margin:50px auto;
                 overflow: hidden;
    }
-   .newscarousel{
+  #newsCarouselContainer  .bdv-carousel-list{
                 position:absolute;
                 left:0;
                 top:0;
                 width: 984px;
                 height:500px;
    }
-   .newscarousel li{
+   #newsCarouselContainer .bdv-carousel-list li{
                 float:left;
                 width:984px;
                 height:20px;
@@ -162,7 +162,7 @@
 </head>
 <body>
   <div id="carouselContainer">
-        <ul class="carousel">
+        <ul class="bdv-carousel-list">
                 <li>
                 <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
                         <ul><li></li><li></li></ul>
@@ -172,20 +172,20 @@
                 <li><img src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
                 <li><img src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
         </ul>
-        <div class="carousel-control">
-                <ul class="carousel-dot">
+        <div class="bdv-carousel-control">
+                <ul class="bdv-carousel-dot">
                         <li></li>
                         <li></li>
                         <li></li>
                         <li></li>
                         <li></li>
                 </ul>
-                <a class="prev" href="javascript:void(0)"></a>
-                <a class="next" href="javascript:void(0)"></a>          
+                <a class="bdv-carousel-prev" href="javascript:void(0)"></a>
+                <a class="bdv-carousel-next" href="javascript:void(0)"></a>          
         </div>
   </div>
   <div id="newsCarouselContainer">
-        <ul class="newscarousel">
+        <ul class="bdv-carousel-list">
                 <li>aaaaaaaaaaaaaaaaaaa</li>
                 <li>aaaaaaaaaaaaaaaaaaa</li>
                 <li>aaaaaaaaaaaaaaaaaaa</li>
@@ -194,7 +194,7 @@
         </ul>
   </div>
    <div id="hCarouselContainer">
-        <ul class="h-carousel">
+         <ul class="bdv-carousel-list">
                 <li>
                 <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
                         <ul><li></li><li></li></ul>
@@ -204,20 +204,20 @@
                 <li><img src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
                 <li><img src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
         </ul>
-        <div class="carousel-control">
-                <ul class="carousel-dot">
+        <div class="bdv-carousel-control">
+                <ul class="bdv-carousel-dot">
                         <li></li>
                         <li></li>
                         <li></li>
                         <li></li>
                         <li></li>
                 </ul>
-                <a class="prev" href="javascript:void(0)"></a>
-                <a class="next" href="javascript:void(0)"></a>          
-        </div>	
+                <a class="bdv-carousel-prev" href="javascript:void(0)"></a>
+                <a class="bdv-carousel-next" href="javascript:void(0)"></a>          
+        </div>
 	</div>
    <div id="vCarouselContainer">
-        <ul class="v-carousel">
+         <ul class="bdv-carousel-list">
                 <li>
                 <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
                         <ul><li></li><li></li></ul>
@@ -227,39 +227,41 @@
                 <li><img src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
                 <li><img src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
         </ul>
-        <div class="carousel-control">
-                <ul class="carousel-dot">
+        <div class="bdv-carousel-control">
+                <ul class="bdv-carousel-dot">
                         <li></li>
                         <li></li>
                         <li></li>
                         <li></li>
                         <li></li>
                 </ul>
-                <a class="prev" href="javascript:void(0)"></a>
-                <a class="next" href="javascript:void(0)"></a>          
-        </div>  
+                <a class="bdv-carousel-prev" href="javascript:void(0)"></a>
+                <a class="bdv-carousel-next" href="javascript:void(0)"></a>          
+        </div> 
   </div>
    <div id="fCarouselContainer">
-        <ul class="f-carousel">
-                <li>
-                <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
-                        <ul><li></li><li></li></ul>
-                </li>
-                <li><img src="http://c.hiphotos.baidu.com/image/pic/item/58ee3d6d55fbb2fb593177e74d4a20a44623dc28.jpg" /></li>
-                <li><img src="http://h.hiphotos.baidu.com/image/pic/item/6159252dd42a2834c3f759f859b5c9ea14cebff4.jpg" /></li>
-                <li><img src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
-                <li><img src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
-        </ul>
-        <div class="carousel-control">
-                <ul class="carousel-dot">
+        <div class="bdv-carousel-container">
+          <ul class="bdv-carousel-list">
+                  <li>
+                  <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
+                          <ul><li></li><li></li></ul>
+                  </li>
+                  <li><img src="http://c.hiphotos.baidu.com/image/pic/item/58ee3d6d55fbb2fb593177e74d4a20a44623dc28.jpg" /></li>
+                  <li><img src="http://h.hiphotos.baidu.com/image/pic/item/6159252dd42a2834c3f759f859b5c9ea14cebff4.jpg" /></li>
+                  <li><img src="http://b.hiphotos.baidu.com/image/pic/item/7c1ed21b0ef41bd5d4a7870753da81cb38db3d48.jpg" /></li>
+                  <li><img src="http://g.hiphotos.baidu.com/image/pic/item/dcc451da81cb39dbc83408a5d2160924aa183048.jpg" /></li>
+          </ul>
+        </div>
+        <div class="bdv-carousel-control">
+                <ul class="bdv-carousel-dot">
                         <li></li>
                         <li></li>
                         <li></li>
                         <li></li>
                         <li></li>
                 </ul>
-                <a class="prev" href="javascript:void(0)"></a>
-                <a class="next" href="javascript:void(0)"></a>          
+                <a class="bdv-carousel-prev" href="javascript:void(0)"></a>
+                <a class="bdv-carousel-next" href="javascript:void(0)"></a>          
         </div>  
   </div>
   <script src="../core/jquery.min.js"></script>
@@ -267,7 +269,7 @@
   <script>
   
     //3d image
-    $(".carousel").bdvCarousel({
+    $("#carouselContainer").bdvCarousel({
             outContainer : 984,
             containerWidth : 570,
             containerHeight : 500,
@@ -276,14 +278,14 @@
             //animate : "fade"
     });
     //font
-    $(".newscarousel").bdvCarousel({
+    $("#newsCarouselContainer").bdvCarousel({
         containerWidth : 984,
                 containerHeight : 20,
                 originalIndex : 0,
                 animate : "slide2dVertical"
     });
     //2d  image
-    $(".h-carousel").bdvCarousel({
+    $("#hCarouselContainer").bdvCarousel({
             outContainer : 984,
             containerWidth : 984,
             containerHeight : 500,
@@ -293,7 +295,7 @@
             //animate : "fade"
     });
      //2d  image
-    $(".v-carousel").bdvCarousel({
+    $("#vCarouselContainer").bdvCarousel({
             outContainer : 984,
             containerWidth : 984,
             containerHeight : 500,
@@ -303,7 +305,7 @@
             //animate : "fade"
     });
     //fade
-    $(".f-carousel").bdvCarousel({
+    $("#fCarouselContainer").bdvCarousel({
             outContainer : 984,
             containerWidth : 984,
             containerHeight : 500,
@@ -314,9 +316,9 @@
     });
     var carousel = $(".carousel").data("bdvCarousel");
 
-        $(".carousel-dot").on("click", function(e) {
-                var se = e.target;
-                if(se.nodeName !="LI")return;
+        $(".carousel-dot").on("click", function(event) {
+                var se = $(event.target);
+                if(se[0].nodeName !="LI")return;
                 
                 carousel.goTo($(".carousel-dot li").index(se));
                 $(se).addClass("dot-selected").siblings("li").removeClass("dot-selected");

@@ -14,11 +14,12 @@
 	* @config {Number} interval  描述两次滚动的时间间隔，默认3000毫秒
 	* @config {Number} duration  描述每次滚动花费的时间，默认500毫秒
 	* @config {String} direction 取值{forward|backward}，描述向前滚动还是向后滚动，默认forward
+	* @config {Number} outContainerWidth 描述外部容器宽度，默认984(3D滚动专用)
 	* @config {Number} containerWidth 描述每一屏的宽度，默认984 
 	* @config {Number} containerHeight 描述每一屏的宽度，默认500
 	* @config {Boolean} lazyload  是否开启图片懒加载 默认false
-	* @config {Array}   controlDot 描述控制点容器 
-
+	* @config {Function} beforeRender 每次轮播前回调
+	* @config {Function}  afterRender  每次轮播后回调
 **/
 
 (function($){
@@ -43,12 +44,9 @@
 	};
 	$.fn.bdvCarousel.options = {
 		originalIndex : 0,
-		viewSize : 3,
-		isLoop : true,
-		step : 1,
 		containerWidth : 984,
 		containerHeight : 500,
-		outContainer : 984,
+		outContainerWidth : 984,
 		animate : 'slide2dHorizontal',
 		autoScroll : true,
 		interval : 3000,
@@ -61,23 +59,33 @@
 		// 初始化
 		init : function(options, el) {
 			var self = this;
-			//容器
-			self.$elm = $(el);
+			//大容器
+			self.$container = $(el);
+
+			//内容容器
+			self.$elm = self.$container.find(".bdv-carousel-list");
 			
 
 			//控制容器
-			self.$dotList = self.$elm.parent().find(".carousel-dot");
+			self.$dotList = self.$container.find(".bdv-carousel-dot");
 			
 			//屏数
 			self.num = self.getTotalCount();
 
-			
+
 
 			self.options = $.extend({}, $.fn.bdvCarousel.options, options);
+
+			//回调函数
+			self.beforeRender = self.options.beforeRender || function() {};
+
+			self.afterRender = self.options.afterRender || function() {};
 
 			//初始化组件,必须在self.options之后
 			self.resetCarousel();
 
+			//事件注册
+			self.eventHandler();
 			/**
 				* @vars   {Number}  pos        定义焦点区所在位置
 				* @vars   {String}  direction  定义滚动的方向
@@ -128,7 +136,7 @@
 								"position" : "absolute",
 								"width" : self.options.containerWidth,
 								"height" : self.options.containerHeight,
-								"left" : (self.options.outContainer - self.options.containerWidth)/2,
+								"left" : (self.options.outContainerWidth - self.options.containerWidth)/2,
 								"opacity" : 1,
 								"z-index" : 3
 							});
@@ -138,7 +146,7 @@
 								"width" : self.options.containerWidth * 0.8,
 								"height" : self.options.containerHeight * 0.8,
 								"margin-top" : self.options.containerHeight * 0.1,
-								"left" : (self.options.outContainer + self.options.containerWidth)/2,
+								"left" : (self.options.outContainerWidth + self.options.containerWidth)/2,
 								"opacity" : 0.5,
 								"z-index" : 0
 							});
@@ -176,11 +184,38 @@
 			}
 			self.start();
 		},
+		//事件中心
+		eventHandler : function() {
+			var self = this;
+			var $controlContainer = self.$container.find(".bdv-carousel-control");
+			if(!$controlContainer) return;
 
+			//注册圆点点击
+			if(self.$dotList) {
+				self.$dotList.on("click", function(event) {
+					var se = $(event.target);
+					if(se[0].nodeName != "LI") {
+						se = se.parents("li");
+					}
+	                //if(se[0].nodeName !="LI")return;
+	                
+	                self.goTo(self.$dotList.children("li").index(se[0]));
+
+	                se.addClass("dot-selected").siblings("li").removeClass("dot-selected");
+					});
+			}
+			//前进后退按钮
+			self.$container.find(".bdv-carousel-prev").on("click", function() {
+				self.prev();
+			})
+			self.$container.find(".bdv-carousel-next").on("click", function() {
+				self.next();
+			})
+		},
 		//获取首次加载的时候控制点所在的位置
-
 		resetCarousel : function() {
 			var self = this;
+
 			if(self.$dotList) {
 				self.$dotList.children("li").eq(self.options.originalIndex).addClass("dot-selected");
 			}
@@ -190,26 +225,12 @@
 		//图片懒加载函数，替换其中的data-src值
 		lazyLoadImg : function(index) {
 			var self = this;
+
 			var img = self.$elm.children("li").eq(index).children("img")[0];
 			if(!$(img).attr("src")) {
 				$(img).attr("src", $(img).attr("data-src"));
 				$(img).removeAttr("data-src");
 			}
-		},
-		//动画执行前回调
-		beforeRender : function(index) {
-			var self = this;
-			if(self.options.lazyload) {
-				self.lazyLoadImg(index);
-			}
-			
-
-			//self.$elm.children("li").eq(0).attr("");
-		},
-
-		//动画执行后回调
-		afterRender : function() {
-			console.log("complete");
 		},
 
 		//开始轮播
@@ -263,6 +284,9 @@
 
 				self.fadeAnimate(curIndex, index);
 
+			}else {
+				//todo 先简单实现goto功能
+				
 			}
 //			self.$elm.children("li").eq(index).addClass("item-selected").siblings("li").removeClass("item-selected");
 			self.start();
@@ -277,8 +301,10 @@
 			var curIndex = self.getCurrentIndex(),
 				nextIndex = (curIndex + 1) % self.num;
 			
-			//动画执行前的回调
-			self.beforeRender(nextIndex);	
+			if(self.options.lazyload) {
+
+				self.lazyLoadImg(nextIndex);
+			}	
 
 			self.$elm.children("li").eq(curIndex).removeClass("item-selected");
 			self.$elm.children("li").eq(nextIndex).addClass("item-selected");
@@ -343,7 +369,10 @@
 				nextIndex = (curIndex + self.num - 1) % self.num;
 
 			//加载前回调
-			self.beforeRender(nextIndex);
+			if(self.options.lazyload) {
+
+				self.lazyLoadImg(nextIndex);
+			}
 
 			self.$elm.children("li").eq(curIndex).removeClass("item-selected");
 			self.$elm.children("li").eq(nextIndex).addClass("item-selected");
@@ -413,6 +442,7 @@
 		//2d水平、垂直动画函数
 		animate : function() {
 			var self = this;
+
 			// @vars {String}    self.direction  {left|top}               根据滚动效果决定方向
 			// @vars {String}    self.size       {self.options.containerWidth|
 			//									  self.options.containerHeight} 根据滚动方向决定用宽度还是高度值 																							 
@@ -458,7 +488,7 @@
 				bigCenter : {
 					"width" : self.options.containerWidth,
 					"height" : self.options.containerHeight,
-					"left" : (self.options.outContainer - self.options.containerWidth)/2,
+					"left" : (self.options.outContainerWidth - self.options.containerWidth)/2,
 					"margin-top" :0,
 					"opacity" : 1,
 					"z-index" : 3
@@ -467,7 +497,7 @@
 					"width" : self.options.containerWidth * 0.8,
 					"height" : self.options.containerHeight * 0.8,
 					"margin-top" : self.options.containerHeight * 0.1,
-					"left" : (self.options.outContainer + self.options.containerWidth)/2,
+					"left" : (self.options.outContainerWidth + self.options.containerWidth)/2,
 					"opacity" : 0.5,
 					"z-index" : 0
 				},
