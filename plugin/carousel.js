@@ -72,7 +72,9 @@
 			//屏数
 			self.num = self.getTotalCount();
 
-
+			self.$elm.ready(function() {
+				console.log(self.$elm.height());
+			});
 
 			self.options = $.extend({}, $.fn.bdvCarousel.options, options);
 
@@ -182,6 +184,9 @@
 					}
 				})
 			}
+			if(self.options.animate == "tab") {
+				self.$elm.children("li").eq(self.options.originalIndex).show();
+			}
 			self.start();
 		},
 		//事件中心
@@ -284,8 +289,13 @@
 
 				self.fadeAnimate(curIndex, index);
 
-			}else {
-				//todo 先简单实现goto功能
+			}else if(self.options.animate == "tab"){
+				self.$elm.children("li").eq(curIndex).fadeOut("fast", function(){
+					self.$elm.children("li").eq(curIndex).hide();
+					self.$elm.children("li").eq(index).fadeIn("fast",function() {
+						self.$elm.children("li").eq(index).show();
+					})
+				})
 				
 			}
 //			self.$elm.children("li").eq(index).addClass("item-selected").siblings("li").removeClass("item-selected");
@@ -355,6 +365,13 @@
 		  			}
 		  		];
 		  		self.galleryAnimate(argument);
+		  	}else if(self.options.animate == "tab"){
+		  		self.$elm.children("li").eq(curIndex).fadeOut("fast", function(){
+					self.$elm.children("li").eq(curIndex).hide();
+					self.$elm.children("li").eq(nextIndex).fadeIn("fast",function() {
+						self.$elm.children("li").eq(nextIndex).show();
+					})
+				})
 		  	}
 
 			self.start();
@@ -425,6 +442,16 @@
 		  		];
 
 		  		self.galleryAnimate(argument);
+		  	}else if(self.options.animate == "tab"){
+
+		  		self.$elm.children("li").eq(curIndex).fadeOut("fast", function() {
+		  			
+					self.$elm.children("li").eq(curIndex).hide();
+
+					self.$elm.children("li").eq(nextIndex).fadeIn("fast",function() {
+						self.$elm.children("li").eq(nextIndex).show();
+					})
+				})
 		  	}
 		  	self.start();
 		},
