@@ -210,10 +210,18 @@
 					});
 			}
 			//前进后退按钮
+			//设定一个时间间隔，在此间隔内的点击无效
+			var prevTime = new Date().getTime();
 			self.$container.find(".bdv-carousel-prev").on("click", function() {
+				var curTime = new Date().getTime();
+				if((curTime - prevTime) < (self.options.duration - 100))return;
+				prevTime = curTime;
 				self.prev();
 			})
 			self.$container.find(".bdv-carousel-next").on("click", function() {
+				var curTime = new Date().getTime();
+				if((curTime - prevTime) < (self.options.duration - 100))return;
+				prevTime = curTime;
 				self.next();
 			})
 		},
@@ -445,7 +453,7 @@
 		  	}else if(self.options.animate == "tab"){
 
 		  		self.$elm.children("li").eq(curIndex).fadeOut("fast", function() {
-		  			
+
 					self.$elm.children("li").eq(curIndex).hide();
 
 					self.$elm.children("li").eq(nextIndex).fadeIn("fast",function() {
