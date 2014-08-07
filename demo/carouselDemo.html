@@ -183,6 +183,29 @@
       width:100%;
       height: 100%;
    }
+    #tabCarouselContainer  .bdv-carousel-dot li{
+
+        display: inline-block;_display:inline;
+        cursor: pointer;
+        width: auto;
+        height: auto;
+        padding: 0 10px;
+        margin-left: 10px;
+        border-radius: 0;
+        color: #999;
+        background:#303030;
+   }
+   #tabCarouselContainer .bdv-carousel-dot li.dot-selected{
+       color: #FFF;
+      background-color: #4f4f4f;
+   }
+    #tabCarouselContainer .bdv-carousel-control .bdv-carousel-dot{
+         width:984px;
+         height:30px;
+         margin-bottom: 20px;
+         position: static;
+         text-align: left;
+   }
 </style>
 </head>
 <body>
@@ -291,6 +314,15 @@
   </div>
 
      <div id="tabCarouselContainer">
+      <div class="bdv-carousel-control">
+                <ul class="bdv-carousel-dot">
+                        <li>电影</li>
+                        <li>电视剧</li>
+                        <li>综艺</li>
+                        <li>动漫</li>
+                        <li>教育</li>
+                </ul>        
+        </div>  
         <div class="bdv-carousel-container">
           <ul class="bdv-carousel-list">
                   <li>
@@ -410,15 +442,7 @@
                   </li>
           </ul>
         </div>
-        <div class="bdv-carousel-control">
-                <ul class="bdv-carousel-dot">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                </ul>        
-        </div>  
+       
   </div>
   <script src="../core/jquery.min.js"></script>
   <script src="../plugin/carousel.js"></script>
