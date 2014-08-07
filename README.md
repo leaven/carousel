@@ -50,5 +50,5 @@ $("#carouselContainer").bdvCarousel({
 	});
 ```
 具体`options`属性请查源注释
-### Demo
+#### Demo
 [【猛戳这里】](http://liwei24.fe.baidu.com/carousel/carousel/demo/carouselDemo.html)
