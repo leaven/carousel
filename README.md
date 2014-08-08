@@ -6,9 +6,9 @@
 ``` html
 <div id="carouselContainer">
         <ul class="bdv-carousel-list">
-                <li></li>
+                <li class="class="bdv-carousel-item""></li>
                 ....
-                <li></li>
+                <li class="class="bdv-carousel-item""></li>
              
         </ul>
         <div class="bdv-carousel-control">
@@ -28,6 +28,17 @@
 其中的carousel类名不可变
 #### CSS组织结构
 ``` css
+	/*外层容器需要设置一个宽度（水平滚动）或者高度（垂直滚动）使其溢出隐藏，
+	淡入淡出使用的是absoulte定位，不限制宽高*/
+	
+	 #carouselContainer{
+	  	width:984px;
+		height:500px;
+		margin:0 auto;
+		overflow:hidden;
+		position:relative;
+	   }
+
 	.bdv-carousel-list{
 	        position:absolute;
 	        left:0;
@@ -35,9 +46,13 @@
 	        width: 984px;
 	        height:500px;
 	   }
-
+	 #carouselContainer .bdv-carousel-list class="bdv-carousel-item"{
+	        float:left;
+	        width:984px;
+	        height:500px;
+	   }
 ```
-设定好宽高即可
+
 #### JS调用方式
 ``` javascript
 $("#carouselContainer").bdvCarousel({
