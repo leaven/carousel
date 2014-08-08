@@ -6,9 +6,9 @@
 ``` html
 <div id="carouselContainer">
         <ul class="bdv-carousel-list">
-                <li class="class="bdv-carousel-item"></li>
+                <li class="bdv-carousel-item"></li>
                 ....
-                <li class="class="bdv-carousel-item"></li>
+                <li class="bdv-carousel-item"></li>
              
         </ul>
         <div class="bdv-carousel-control">
