@@ -72,10 +72,6 @@
 			//屏数
 			self.num = self.getTotalCount();
 
-			self.$elm.ready(function() {
-				console.log(self.$elm.height());
-			});
-
 			self.options = $.extend({}, $.fn.bdvCarousel.options, options);
 
 			//回调函数
@@ -116,6 +112,7 @@
 				self.initData = self.axis[self.options.animate];
 
 				if(self.options.animate =="slide2dHorizontal") {
+					console.log(self.initData.maxSize);
 					self.$elm.css("width", self.initData.maxSize);
 				}
 				if(self.options.animate =="slide2dVertical") {

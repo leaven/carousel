@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="http://list.video.baidu.com/pc_static/common/base.css" />
 <style>
+  h3{
+    font: 30px/60px "微软雅黑";
+    color: #999;
+    width:984px;
+    margin:0 auto;
+  }
   /*3D*/
    #carouselContainer{
   	width:984px;
@@ -138,6 +144,7 @@
                 right: 0;
                 background-position: -80px -80px;
    }
+   /*垂直滚动*/
    #newsCarouselContainer{
                 width:984px;
                 height:20px;
@@ -155,6 +162,27 @@
    #newsCarouselContainer .bdv-carousel-list li{
                 float:left;
                 width:984px;
+                height:20px;
+                font:16px/20px "微软雅黑";
+   }
+   /*水平滚动*/
+    #hNewsCarouselContainer{
+                width:100px;
+                height:20px;
+                position:relative;
+                margin:50px auto;
+                overflow: hidden;
+   }
+  #hNewsCarouselContainer  .bdv-carousel-list{
+                position:absolute;
+                left:0;
+                top:0;
+                width: 984px;
+                height:500px;
+   }
+   #hNewsCarouselContainer .bdv-carousel-list li{
+                float:left;
+                width:100px;
                 height:20px;
                 font:16px/20px "微软雅黑";
    }
@@ -209,7 +237,9 @@
 </style>
 </head>
 <body>
+  
   <div id="carouselContainer">
+        <h3>3D轮播Demo</h3>
         <ul class="bdv-carousel-list">
                 <li>
                 <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
@@ -232,16 +262,33 @@
                 <a class="bdv-carousel-next" href="javascript:void(0)"></a>          
         </div>
   </div>
+  
+  <h3>文字垂直滚动Demo</h3>
   <div id="newsCarouselContainer">
+        
         <ul class="bdv-carousel-list">
-                <li>aaaaaaaaaaaaaaaaaaa</li>
-                <li>aaaaaaaaaaaaaaaaaaa</li>
-                <li>aaaaaaaaaaaaaaaaaaa</li>
-                <li>aaaaaaaaaaaaaaaaaaa</li>
-                <li>aaaaaaaaaaaaaaaaaaa</li>
+                <li>文字垂直滚动</li>
+                <li>文字垂直滚动</li>
+                <li>文字垂直滚动</li>
+                <li>文字垂直滚动</li>
+                <li>文字垂直滚动</li>
         </ul>
   </div>
+
+ <h3>文字水平滚动Demo</h3>
+  <div id="hNewsCarouselContainer">
+         
+        <ul class="bdv-carousel-list">
+                <li>文字水平滚动</li>
+                <li>文字水平滚动</li>
+                <li>文字水平滚动</li>
+                <li>文字水平滚动</li>
+                <li>文字水平滚动</li>
+        </ul>
+  </div>
+    
    <div id="hCarouselContainer">
+          <h3>2D水平轮播Demo</h3>
          <ul class="bdv-carousel-list">
                 <li>
                 <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
@@ -264,7 +311,9 @@
                 <a class="bdv-carousel-next" href="javascript:void(0)"></a>          
         </div>
 	</div>
+    
    <div id="vCarouselContainer">
+          <h3>2D垂直轮播Demo</h3>
          <ul class="bdv-carousel-list">
                 <li>
                 <img src="http://f.hiphotos.baidu.com/image/pic/item/e61190ef76c6a7efb35790a9fffaaf51f2de66cf.jpg" />
@@ -287,7 +336,9 @@
                 <a class="bdv-carousel-next" href="javascript:void(0)"></a>          
         </div> 
   </div>
+    
    <div id="fCarouselContainer">
+        <h3>淡入淡出Demo</h3>
         <div class="bdv-carousel-container">
           <ul class="bdv-carousel-list">
                   <li>
@@ -312,8 +363,9 @@
                 <a class="bdv-carousel-next" href="javascript:void(0)"></a>          
         </div>  
   </div>
-
+      
      <div id="tabCarouselContainer">
+      <h3>tab切换Demo</h3>
       <div class="bdv-carousel-control">
                 <ul class="bdv-carousel-dot">
                         <li>电影</li>
@@ -459,14 +511,20 @@
     });
     //font
     $("#newsCarouselContainer").bdvCarousel({
-        containerWidth : 984,
-                containerHeight : 20,
-                originalIndex : 0,
-                animate : "slide2dVertical"
+            containerWidth : 984,
+            containerHeight : 20,
+            originalIndex : 0,
+            animate : "slide2dVertical"
+    });
+     $("#hNewsCarouselContainer").bdvCarousel({
+            containerWidth : 100,
+            containerHeight : 20,
+            originalIndex : 0,
+            animate : "slide2dHorizontal"
     });
     //2d  image
     $("#hCarouselContainer").bdvCarousel({
-            outContainer : 984,
+            outContainerWidth : 984,
             containerWidth : 984,
             containerHeight : 500,
             originalIndex : 0,
@@ -476,7 +534,7 @@
     });
      //2d  image
     $("#vCarouselContainer").bdvCarousel({
-            outContainer : 984,
+            outContainerHeight : 500,
             containerWidth : 984,
             containerHeight : 500,
             originalIndex : 0,
@@ -486,7 +544,6 @@
     });
     //fade
     $("#fCarouselContainer").bdvCarousel({
-            outContainer : 984,
             containerWidth : 984,
             containerHeight : 500,
             originalIndex : 0,
@@ -495,7 +552,6 @@
             animate : "fade"
     });
     $("#tabCarouselContainer").bdvCarousel({
-            outContainer : 984,
             containerWidth : 984,
             containerHeight : 500,
             originalIndex : 0,
